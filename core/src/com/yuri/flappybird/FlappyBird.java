@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.yuri.helpers.AssetLoader;
 import com.yuri.screens.GameScreen;
 
-public class FirstGame extends Game {
+public class FlappyBird extends Game {
 	
 	@Override
 	public void create () {
