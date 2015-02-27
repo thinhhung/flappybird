@@ -51,9 +51,8 @@ public class AssetLoader {
 
 		texture = new Texture(Gdx.files.internal("pipe.png"));
 		texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
-		skullDown = new TextureRegion(texture);
-		skullDown.flip(false, true);
-
+		bar = new TextureRegion(texture);
+		bar.flip(false, true);
 	}
 	
 	public static void dispose() {

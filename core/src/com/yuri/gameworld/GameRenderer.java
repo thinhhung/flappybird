@@ -3,13 +3,15 @@ package com.yuri.gameworld;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.yuri.gameobjects.Bird;
+import com.yuri.gameobjects.Grass;
+import com.yuri.gameobjects.Pipe;
+import com.yuri.gameobjects.ScrollHandler;
 import com.yuri.helpers.AssetLoader;
 
 public class GameRenderer {
@@ -24,6 +26,9 @@ public class GameRenderer {
 	
 	// Game Objects
 	private Bird bird;
+	private ScrollHandler scroller;
+	private Grass frontGrass, backGrass;
+	private Pipe pipe1, pipe2, pipe3;
 	
 	// Game Assets
 	public static TextureRegion bg, grass;
@@ -38,7 +43,7 @@ public class GameRenderer {
 		this.midPointY = midPointY;
 		
 		this.camera = new OrthographicCamera();
-		this.camera.setToOrtho(true, 136, gameHeight);
+		this.camera.setToOrtho(true, 136, this.gameHeight);
 		
 		this.batch = new SpriteBatch();
 		this.batch.setProjectionMatrix(this.camera.combined);
@@ -52,7 +57,7 @@ public class GameRenderer {
 	
 	public void render(float runTime) {
 		
-		Bird bird = world.getBird();
+		bird = world.getBird();
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -83,9 +88,14 @@ public class GameRenderer {
         batch.disableBlending();
         batch.draw(AssetLoader.bg, 0, midPointY + 23, 136, 43);
         batch.draw(AssetLoader.grass, 0, midPointY + 66, 136, 45);
-
-        // The bird needs transparency, so we enable that again.
+        
+        // 1. Draw Grass
+        drawGrass();
+        // 2. Draw Pipes
+        drawPipes();
         batch.enableBlending();
+        // 3. Draw Skulls
+        drawSkulls();
 
         if (bird.shouldntFlap()) {
         	batch.draw(birdMid, bird.getX(), bird.getY(), 
@@ -103,6 +113,12 @@ public class GameRenderer {
 	
 	private void initGameObjects() {
 		bird = world.getBird();
+		scroller = world.getScroller();
+		frontGrass = scroller.getFrontGrass();
+		backGrass = scroller.getBackGrass();
+		pipe1 = scroller.getPipe1();
+		pipe2 = scroller.getPipe2();
+		pipe3 = scroller.getPipe3();
 	}
 	
 	private void initAssets() {
@@ -115,5 +131,46 @@ public class GameRenderer {
 		skullUp = AssetLoader.skullUp;
 		skullDown = AssetLoader.skullDown;
 		bar = AssetLoader.bar;
+	}
+	
+	private void drawGrass() {
+		batch.draw(grass, frontGrass.getX(), frontGrass.getY(), 
+				frontGrass.getWidth(), frontGrass.getHeight());
+		batch.draw(grass, backGrass.getX(), backGrass.getY(), 
+				backGrass.getWidth(), backGrass.getHeight());
+	}
+	
+	private void drawSkulls() {
+		batch.draw(skullUp, pipe1.getX() - 1, 
+				pipe1.getY() + pipe1.getHeight() -14, 24 , 14);
+		batch.draw(skullDown, pipe1.getX() - 1, 
+				pipe1.getY() + pipe1.getHeight() +45, 24 , 14);
+
+		batch.draw(skullUp, pipe2.getX() - 1,
+				pipe2.getY() + pipe2.getHeight() -14, 24 , 14);
+		batch.draw(skullDown, pipe2.getX() - 1, 
+				pipe2.getY() + pipe2.getHeight() +45, 24 , 14);
+
+		batch.draw(skullUp, pipe3.getX() - 1, 
+				pipe3.getY() + pipe3.getHeight() -14, 24 , 14);
+		batch.draw(skullDown, pipe3.getX() - 1, 
+				pipe3.getY() + pipe3.getHeight() +45, 24 , 14);
+	}
+	
+	private void drawPipes() {
+		batch.draw(bar, pipe1.getX(), pipe1.getY(), 
+				pipe1.getWidth(), pipe1.getHeight());
+		batch.draw(bar, pipe1.getX(), pipe1.getY() + pipe1.getHeight() + 45, 
+				pipe1.getWidth(), midPointY + 66 - (pipe1.getHeight() + 45));
+		
+		batch.draw(bar, pipe2.getX(), pipe2.getY(), 
+				pipe2.getWidth(), pipe2.getHeight());
+		batch.draw(bar, pipe2.getX(), pipe2.getY() + pipe2.getHeight() + 45, 
+				pipe2.getWidth(), midPointY + 66 - (pipe2.getHeight() + 45));
+		
+		batch.draw(bar, pipe3.getX(), pipe3.getY(), 
+				pipe3.getWidth(), pipe3.getHeight());
+		batch.draw(bar, pipe3.getX(), pipe3.getY() + pipe3.getHeight() + 45, 
+				pipe3.getWidth(), midPointY + 66 - (pipe3.getHeight() + 45));
 	}
 }
