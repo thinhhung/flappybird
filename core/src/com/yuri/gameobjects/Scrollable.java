@@ -30,7 +30,16 @@ public class Scrollable {
 		position.x = x;
 		isScrolledLeft = false;
 	}
-	
+
+    public void stop() {
+        velocity.x = 0;
+    }
+
+    public void onRestart(float x, float scrollSpeed) {
+        position.x = x;
+        velocity.x = scrollSpeed;
+    }
+
 	public boolean isScrolledLeft() {
 		return isScrolledLeft;
 	}

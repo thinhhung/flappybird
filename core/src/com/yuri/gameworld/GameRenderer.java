@@ -1,6 +1,7 @@
 package com.yuri.gameworld;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -88,12 +89,12 @@ public class GameRenderer {
         batch.disableBlending();
         batch.draw(AssetLoader.bg, 0, midPointY + 23, 136, 43);
         batch.draw(AssetLoader.grass, 0, midPointY + 66, 136, 45);
-        
+
         // 1. Draw Grass
         drawGrass();
+        batch.enableBlending();
         // 2. Draw Pipes
         drawPipes();
-        batch.enableBlending();
         // 3. Draw Skulls
         drawSkulls();
 
@@ -107,9 +108,43 @@ public class GameRenderer {
         			bird.getWidth(), bird.getHeight(), 1, 1, bird.getRotation());
         }
 
+        // TODO: TEMPORARY CODE! Fix this section later
+
+        if (world.isReady()) {
+            AssetLoader.shadow.draw(batch, "Touch me", 136 / 2 - 42, 76);
+            AssetLoader.font.draw(batch, "Touch me", 136 / 2 - 42 - 1, 75);
+        } else {
+            if (world.isGameOver() || world.isHighScore()) {
+                if (world.isGameOver()) {
+                    AssetLoader.shadow.draw(batch, "Game Over", 25, 56);
+                    AssetLoader.font.draw(batch, "Game Over", 24, 55);
+
+                    AssetLoader.shadow.draw(batch, "High Score:", 23, 106);
+                    AssetLoader.font.draw(batch, "High Score:", 22, 105);
+
+                    String highScore = AssetLoader.getHighScore() + "";
+                    AssetLoader.shadow.draw(batch, highScore,
+                            136 / 2 - 3 * highScore.length(), 128);
+                    AssetLoader.font.draw(batch, highScore,
+                            136 / 2 - 3 * highScore.length() - 1, 127);
+                } else {
+                    AssetLoader.shadow.draw(batch, "High Score!", 19, 56);
+                    AssetLoader.font.draw(batch, "High Score!", 18, 55);
+                }
+
+                AssetLoader.shadow.draw(batch, "Try again?", 24, 76);
+                AssetLoader.font.draw(batch, "Try again?", 23, 75);
+            }
+
+            // Draw score
+            String score = world.getScore() + "";
+            AssetLoader.shadow.draw(batch, score, (136 / 2) - (3 * score.length()), 12);
+            AssetLoader.font.draw(batch, score, (136 / 2) - (3 * score.length()), 11);
+        }
+
         // End SpriteBatch
         batch.end();
-	}
+    }
 	
 	private void initGameObjects() {
 		bird = world.getBird();
@@ -141,6 +176,8 @@ public class GameRenderer {
 	}
 	
 	private void drawSkulls() {
+        // TODO: TEMPORARY CODE! Fix this section later
+
 		batch.draw(skullUp, pipe1.getX() - 1, 
 				pipe1.getY() + pipe1.getHeight() -14, 24 , 14);
 		batch.draw(skullDown, pipe1.getX() - 1, 
@@ -158,6 +195,8 @@ public class GameRenderer {
 	}
 	
 	private void drawPipes() {
+        // TODO: TEMPORARY CODE! Fix this section later
+
 		batch.draw(bar, pipe1.getX(), pipe1.getY(), 
 				pipe1.getWidth(), pipe1.getHeight());
 		batch.draw(bar, pipe1.getX(), pipe1.getY() + pipe1.getHeight() + 45, 

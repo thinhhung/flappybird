@@ -4,8 +4,9 @@
 	<inherits name='com.badlogic.gdx.backends.gdx_backends_gwt' />
 	<inherits name='com.badlogic.gdx.physics.box2d.box2d-gwt' />
 
-	<inherits name='FirstGame' />
-	<entry-point class='com.firstgame.game.client.HtmlLauncher' />
+	<inherits name='flappybird' />
+	<entry-point class='com.yuri.flappybird.client.HtmlLauncher' />
 	
 	<set-configuration-property name="gdx.assetpath" value="../android/assets" />
+    <inherits name='aurelienribon.tweenengine'/>
 </module>

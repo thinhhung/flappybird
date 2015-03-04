@@ -1,20 +1,27 @@
 package com.yuri.helpers;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.yuri.gameobjects.Bird;
+import com.yuri.gameworld.GameWorld;
 
 public class InputHandler implements InputProcessor {
 	
 	private Bird bird;
+    private GameWorld world;
 	
-	public InputHandler(Bird bird) {
-		this.bird = bird;
+	public InputHandler(GameWorld world) {
+		this.world = world;
+        bird = this.world.getBird();
 	}
 
 	@Override
 	public boolean keyDown(int keycode) {
-		// TODO Auto-generated method stub
-		return false;
+		if (keycode == Input.Keys.SPACE) {
+            tapped();
+            return true;
+        }
+        return false;
 	}
 
 	@Override
@@ -31,14 +38,14 @@ public class InputHandler implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
+		tapped();
+		return true;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		bird.onClick();
-		return false;
+        // TODO Auto-generated method stub
+        return false;
 	}
 
 	@Override
@@ -58,5 +65,15 @@ public class InputHandler implements InputProcessor {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+    public void tapped() {
+        if (world.isReady()) {
+            world.start();
+        }
+        bird.onClick();
+        if (world.isGameOver()) {
+            world.restart();
+        }
+    }
 
 }
